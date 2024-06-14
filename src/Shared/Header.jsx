@@ -1,8 +1,16 @@
 
 import { Button, Navbar } from "keep-react";
-import {  SignIn } from "phosphor-react";
+import { Heart, SignIn, User } from "phosphor-react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../Providers/AuthProvider";
 const Header = () => {
+    const { user, logout } = useContext(AuthContext)
+    const handleLogOut = () =>{
+        logout()
+        .then(()=>{})
+        .catch(console.error())
+    }
     return (
         <div >
             <Navbar fluid={true}>
@@ -12,7 +20,7 @@ const Header = () => {
                         className="lg:flex hidden items-center justify-between gap-8"
                     >
                         <Link className="px-4 text-lg" to={'/'}>Home</Link>
-                        <Link className="px-4 text-lg" to={'/apartment'}>Apartment</Link>
+                        <Link className="px-4 text-lg" to={'/apartments'}>Apartment</Link>
                         {/* <Navbar.Link className="px-4" linkName="Home" />
                         <Navbar.Link linkName="Appartments" /> */}
                     </Navbar.Container>
@@ -25,8 +33,8 @@ const Header = () => {
                         <Navbar.Container tag="ul" className="flex flex-col gap-5">
                             {/* <Navbar.Link linkName="Home" />
                             <Navbar.Link linkName="Appartments" /> */}
-                            <Link>Home</Link>
-                            <Link>Apartment</Link>
+                            <Link className="px-4 text-lg" to={'/'}>Home</Link>
+                            <Link className="px-4 text-lg" to={'/apartments'}>Apartment</Link>
 
                         </Navbar.Container>
                     </Navbar.Collapse>
@@ -34,12 +42,9 @@ const Header = () => {
                     <Navbar.Container className="flex items-center gap-3">
                         <Navbar.Container
                             tag="ul"
-                            className="lg:flex hidden items-center justify-between gap-5"
+                            className="lg:flex hidden items-center justify-between gap-5 px-1"
                         >
-                            {/* <Navbar.Link
-                                icon={<MagnifyingGlass size={20} color="#444" />}
-                                iconAnimation={false}
-                            />
+                            
                             <Navbar.Link
                                 icon={<User size={20} color="#444" />}
                                 iconAnimation={false}
@@ -47,7 +52,8 @@ const Header = () => {
                             <Navbar.Link
                                 icon={<Heart size={20} color="#444" />}
                                 iconAnimation={false}
-                            /> */}
+                            />
+                            
                         </Navbar.Container>
 
                         {/* <Button size="xs" variant="outline">
@@ -56,10 +62,21 @@ const Header = () => {
                             </span>
                             <span className="ml-1 text-metal-600">Cart $0.00</span>
                         </Button> */}
-                        <Button>
-                            <SignIn size={20} className="mr-1.5" />
-                            Sign In
-                        </Button>
+                        {
+                            user ? <>
+                            <Link to={'login'}><Button onClick={handleLogOut} size="xs">
+                                    <SignIn size={20} className="mr-1.5" />
+                                    Log Out
+                                </Button> </Link>
+                            </> : <>
+                                <Link to={'login'}><Button size="xs">
+                                    <SignIn size={20} className="mr-1.5" />
+                                    Sign In
+                                </Button> </Link>
+                            </>
+                        }
+
+
                         <Navbar.Toggle />
                     </Navbar.Container>
                 </Navbar.Container>
